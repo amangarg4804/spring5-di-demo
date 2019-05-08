@@ -22,15 +22,8 @@ public class LifeCycleDemoBean implements InitializingBean, DisposableBean, Bean
     }
 
     @Override
-    public void destroy() throws Exception {
-        System.out.println("## The Lifecycle bean has been terminated");
-
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("## The LifeCycleBean has its properties set!");
-
+    public void setBeanName(String name) {
+        System.out.println("## My Bean Name is: " + name);
     }
 
     @Override
@@ -39,19 +32,28 @@ public class LifeCycleDemoBean implements InitializingBean, DisposableBean, Bean
     }
 
     @Override
-    public void setBeanName(String name) {
-        System.out.println("## My Bean Name is: " + name);
-
-    }
-
-    @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         System.out.println("## Application context has been set");
     }
 
+    public void beforeInit(){
+        System.out.println("## - Before Init - Called by Bean Post Processor");
+    }
+
+
     @PostConstruct
     public void postConstruct(){
         System.out.println("## The Post Construct annotated method has been called");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("## The LifeCycleBean has its properties set!");
+
+    }
+
+    public void afterInit(){
+        System.out.println("## - After init called by Bean Post Processor");
     }
 
     @PreDestroy
@@ -59,11 +61,8 @@ public class LifeCycleDemoBean implements InitializingBean, DisposableBean, Bean
         System.out.println("## The Predestroy annotated method has been called");
     }
 
-    public void beforeInit(){
-        System.out.println("## - Before Init - Called by Bean Post Processor");
-    }
-
-    public void afterInit(){
-        System.out.println("## - After init called by Bean Post Processor");
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("## The Lifecycle bean has been terminated");
     }
 }
